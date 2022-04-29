@@ -2,3 +2,17 @@
 	width: 500px;
 	margin: auto;
 }
+.checkbox-new{
+	display: flex;
+	margin: 29px 94px;
+	size: 20px;
+}
+.checkbox1{
+	height: 20px;
+}
+.radio_button{
+	display: flex;
+	padding: 13px 94px;
+	padding-left: 120px
+
+}

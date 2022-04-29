@@ -6,12 +6,16 @@ class Form extends Component {
   constructor (props) {
     super(props);
     this.state = {
+      firstName:'',
+      lastName:'',
       email: '',
-      password: '',
       phone: '',
-      formErrors: {email: '', password: '',phone:''},
+      male:'',
+      formErrors: {firstName:'',lastName:'',email: '',phone:''},
+      firstNameValid:false,
+      lastNameValid:false,
       emailValid: false,
-      passwordValid: false,
+      phoneValid:false,
       formValid: false
     }
   }
@@ -25,8 +29,9 @@ class Form extends Component {
 
   validateField(fieldName, value) {
     let fieldValidationErrors = this.state.formErrors;
+    let firstNameValid=this.state.firstNameValid;
+    let lastNameValid=this.state.lastNameValid;
     let emailValid = this.state.emailValid;
-    let passwordValid = this.state.passwordValid;
     let phoneValid = this.state.phoneValid;
 
     switch(fieldName) {
@@ -34,9 +39,13 @@ class Form extends Component {
         emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
         fieldValidationErrors.email = emailValid ? '' : ' is invalid';
         break;
-      case 'password':
-        passwordValid = value.length >= 6;
-        fieldValidationErrors.password = passwordValid ? '': ' is too short';
+      case 'firstName':
+        firstNameValid = value.length >= 6;
+        fieldValidationErrors.firstName = firstNameValid ? '': ' is too short';
+        break;
+        case 'lastName':
+        lastNameValid = value.length >= 6;
+        fieldValidationErrors.lastName = lastNameValid ? '': ' is too short';
         break;
     case 'phone':
       phoneValid = value.length >= 6;
@@ -46,14 +55,15 @@ class Form extends Component {
       break;
   }
     this.setState({formErrors: fieldValidationErrors,
+                    firstNameValid:firstNameValid,
+                    lastNameValid:lastNameValid,
                     emailValid: emailValid,
-                    passwordValid: passwordValid,
                     phoneValid: phoneValid,
                   }, this.validateForm);
   }
 
   validateForm() {
-    this.setState({formValid: this.state.emailValid && this.state.passwordValid && this.state.phoneValid});
+    this.setState({formValid: this.state.firstNameValid && this.state.lastNameValid && this.state.emailValid && this.state.phoneValid});
   }
 
   errorClass(error) {
@@ -67,6 +77,20 @@ class Form extends Component {
         <div className="panel panel-default">
           <FormErrors formErrors={this.state.formErrors} />
         </div>
+        <div className={`form-group ${this.errorClass(this.state.formErrors.firstName)}`}>
+          <label htmlFor="password">First Name</label>
+          <input type="text" className="form-control" name="firstName"
+            placeholder="first name"
+            value={this.state.firstName}
+            onChange={this.handleUserInput}  />
+        </div>
+        <div className={`form-group ${this.errorClass(this.state.formErrors.lastName)}`}>
+          <label htmlFor="password">Last Name</label>
+          <input type="text" className="form-control" name="lastName"
+            placeholder="last name"
+            value={this.state.lastName}
+            onChange={this.handleUserInput}  />
+        </div>
         <div className={`form-group ${this.errorClass(this.state.formErrors.email)}`}>
           <label htmlFor="email">Email address</label>
           <input type="email" required className="form-control" name="email"
@@ -74,20 +98,39 @@ class Form extends Component {
             value={this.state.email}
             onChange={this.handleUserInput}  />
         </div>
-        <div className={`form-group ${this.errorClass(this.state.formErrors.password)}`}>
-          <label htmlFor="password">Password</label>
-          <input type="password" className="form-control" name="password"
-            placeholder="Password"
-            value={this.state.password}
-            onChange={this.handleUserInput}  />
-        </div>
+       
         <div className={`form-group ${this.errorClass(this.state.formErrors.phone)}`}>
-          <label htmlFor="phone">Phone</label>
+          <label htmlFor="phone">Contact</label>
           <input type="phone" className="form-control" name="phone"
-            placeholder="Phone"
+            placeholder="Contact"
             value={this.state.phone}
             onChange={this.handleUserInput}  />
         </div>
+        <label>Interest:</label>
+        <div className={"checkbox-new"}>
+          <label htmlFor="male">Traveling</label>
+          <input type="checkbox" className="form-control" name="male" id="checkbox1"
+            value={this.state.male}
+            onChange={this.handleUserInput}  />
+             <label htmlFor="male">Watchine Movies</label>
+          <input type="checkbox" className="form-control" name="male" id="checkbox2"
+            value={this.state.male}
+            onChange={this.handleUserInput}  />
+        </div>
+     
+        <label>Gender :</label>
+        <div className={"radio_button"}>
+          <label htmlFor="male">Male</label>
+          <input type="radio" className="form-control" name="male"
+            value={this.state.male}
+            onChange={this.handleUserInput}  />
+    
+          <label htmlFor="female">female</label>
+          <input type="radio" className="form-control" name="female"
+            value={this.state.female}
+            onChange={this.handleUserInput}  />
+        </div>
+
         <button type="submit" className="btn btn-primary" disabled={!this.state.formValid}>Sign up</button>
       </form>
     )
